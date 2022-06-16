@@ -1,4 +1,5 @@
 "npm install" in both TraCuuThongTin and ./client/src 
+
 "npm run dev" in TraCuuThongTin to start app
 
 Chức năng: 
