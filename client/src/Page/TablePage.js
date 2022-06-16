@@ -66,7 +66,7 @@ export default function TablePage() {
     const handleSearch = () => {
         const { hoVaTen, maHocSinh } = searchValue
         let MHStemp = maHocSinh.trim().replace(" ", "")
-        let HVTtemp = removeAccents(hoVaTen).toLowerCase()
+        let HVTtemp = removeAccents(hoVaTen).toLowerCase().trim()
         let HVTsearchList = []
         let MHSseacrhList = []
 
