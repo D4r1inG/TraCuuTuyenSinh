@@ -27,7 +27,7 @@ export default function TablePage() {
     }, [])
 
     const handleOk = () => {
-        setVisible({...visible, isLoading: true});
+        setVisible({ ...visible, isLoading: true });
         axios.post('/api/updateUser', visible.user)
             .then(res => {
                 let newList = defaultList.map(user => user.maHocSinh === visible.user.maHocSinh ? visible.user : user)
@@ -285,7 +285,8 @@ export default function TablePage() {
                     <button className='text-primary btn' style={{ border: 'none' }} onClick={() => {
                         setVisible({
                             user: record,
-                            flag: true
+                            flag: true,
+                            isLoading: false
                         })
                     }}>Edit</button>
                 </Space>
@@ -334,7 +335,8 @@ export default function TablePage() {
                 onCancel={() => {
                     setVisible({
                         user: {},
-                        flag: false
+                        flag: false,
+                        isLoading: false
                     })
                 }}
             >
@@ -344,41 +346,41 @@ export default function TablePage() {
                 </div>
                 <div className='mb-3'>
                     <label>Trường tiểu học: </label>
-                    <Input name='truongTieuHoc' defaultValue={visible.user.truongTieuHoc} onChange={handleModalChange} />
+                    <Input name='truongTieuHoc' value={visible.user.truongTieuHoc} onChange={handleModalChange} />
                 </div>
                 <div className='mb-3'>
                     <label>Quận/Huyện: </label>
-                    <Input name='quanHuyen' defaultValue={visible.user.quanHuyen} onChange={handleModalChange} />
+                    <Input name='quanHuyen' value={visible.user.quanHuyen} onChange={handleModalChange} />
                 </div>
                 <div className='mb-3'>
                     <label>Lớp: </label>
-                    <Input name='lop' defaultValue={visible.user.lop} onChange={handleModalChange} />
+                    <Input name='lop' value={visible.user.lop} onChange={handleModalChange} />
                 </div>
                 <div className='mb-3 d-flex'>
                     <div className='mr-3'>
                         <label>Ngày sinh: </label>
-                        <Input name='ngay' defaultValue={visible.user.ngay} onChange={handleModalChange} />
+                        <Input name='ngay' value={visible.user.ngay} onChange={handleModalChange} />
                     </div>
                     <div className='mr-3'>
                         <label>Tháng sinh: </label>
-                        <Input name='thang' defaultValue={visible.user.thang} onChange={handleModalChange} />
+                        <Input name='thang' value={visible.user.thang} onChange={handleModalChange} />
                     </div>
                     <div>
                         <label>Năm sinh: </label>
-                        <Input name='nam' defaultValue={visible.user.nam} onChange={handleModalChange} />
+                        <Input name='nam' value={visible.user.nam} onChange={handleModalChange} />
                     </div>
                 </div>
                 <div className='mb-3'>
                     <label>Dân tộc: </label>
-                    <Input name='danToc' defaultValue={visible.user.danToc} onChange={handleModalChange} />
+                    <Input name='danToc' value={visible.user.danToc} onChange={handleModalChange} />
                 </div>
                 <div className='mb-3'>
                     <label>Hộ khẩu thường trú: </label>
-                    <Input name='hoKhau' defaultValue={visible.user.hoKhau} onChange={handleModalChange} />
+                    <Input name='hoKhau' value={visible.user.hoKhau} onChange={handleModalChange} />
                 </div>
                 <div className='mb-3'>
                     <label>Điện thoại liên hệ: </label>
-                    <Input name='dienThoai' defaultValue={visible.user.dienThoai} onChange={handleModalChange} />
+                    <Input name='dienThoai' value={visible.user.dienThoai} onChange={handleModalChange} />
                 </div>
             </Modal>
         </div>
