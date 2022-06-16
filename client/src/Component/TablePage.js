@@ -1,5 +1,5 @@
 import React, { Children, useEffect, useState } from 'react'
-import { Button, message, Upload, Space, Table, Tag, Popconfirm } from 'antd';
+import { Button, message, Upload, Space, Table, Tag, Popconfirm, Modal, Input } from 'antd';
 import axios from 'axios';
 
 export default function TablePage() {
@@ -11,6 +11,12 @@ export default function TablePage() {
         maHocSinh: ''
     })
 
+    const [visible, setVisible] = useState({
+        user: {},
+        flag: false,
+        isLoading: false
+    });
+
     useEffect(() => {
         axios.get('/api/getStudentList')
             .then(res => {
@@ -19,6 +25,77 @@ export default function TablePage() {
             })
             .catch(err => console.log(err.response.data))
     }, [])
+
+    const handleOk = () => {
+        setVisible({...visible, isLoading: true});
+        axios.post('/api/updateUser', visible.user)
+            .then(res => {
+                let newList = defaultList.map(user => user.maHocSinh === visible.user.maHocSinh ? visible.user : user)
+                setdefaultList(newList)
+                setList(newList)
+                setVisible({
+                    user: {},
+                    flag: false,
+                    isLoading: false
+                });
+                message.success("Cập nhật thành công!")
+            })
+            .catch(err => {
+                setVisible({
+                    user: {},
+                    flag: false,
+                    isLoading: false
+                });
+                message.error("Opps!? Something went wrong!")
+            })
+    };
+
+    const handleModalChange = (e) => {
+        const { value, name } = e.target
+        setVisible({
+            user: { ...visible.user, [name]: value },
+            flag: true
+        })
+    }
+
+    const handleSearchChange = (e) => {
+        const { value, name } = e.target
+        setSearchValue({ ...searchValue, [name]: value })
+    }
+
+    const handleSearch = () => {
+        const { hoVaTen, maHocSinh } = searchValue
+        let MHStemp = maHocSinh.trim().replace(" ", "")
+        let HVTtemp = removeAccents(hoVaTen).toLowerCase()
+        let HVTsearchList = []
+        let MHSseacrhList = []
+
+        if (maHocSinh !== '') {
+            for (let student of defaultList) {
+                let str = student['maHocSinh'].replace(/\r?\n/g, "")
+                if (str.includes(MHStemp)) {
+                    MHSseacrhList.push(student)
+                }
+            }
+            setList(MHSseacrhList)
+        } else if (hoVaTen !== '') {
+            for (let student of defaultList) {
+                let str = removeAccents(student['hoVaTen']).toLowerCase()
+                if (str.search(HVTtemp) !== -1) {
+                    HVTsearchList.push(student)
+                }
+            }
+            setList(HVTsearchList)
+        } else {
+            setList(defaultList)
+        }
+    }
+
+    const removeAccents = (str) => {
+        return str.normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/đ/g, 'd').replace(/Đ/g, 'D');
+    }
 
     const columns = [
         {
@@ -178,69 +255,43 @@ export default function TablePage() {
             render: (_, record) => {
                 return <Space size="middle">
                     <Popconfirm
-                        title="Are you sure to delete this user?"
+                        title={`Xác nhận xóa ${record.hoVaTen} khỏi danh sách ?`}
                         onConfirm={() => {
                             const { maHocSinh } = record
                             axios.post('/api/deleteUser', { maHocSinh: maHocSinh })
                                 .then(res => {
                                     message.success(`Đã xóa thành công học sinh ${record.hoVaTen} khỏi danh sách!`);
-                                    axios.get('/api/getStudentList')
-                                        .then(res => {
-                                            setList(res.data.data)
-                                            setdefaultList(res.data.data)
-                                        })
-                                        .catch(err => console.log(err.response.data))
+                                    let newList = defaultList.filter(student => student.maHocSinh !== maHocSinh)
+                                    setList(newList)
+                                    setdefaultList(newList)
+
+                                    // axios.get('/api/getStudentList')
+                                    //     .then(res => {
+                                    //         setList(res.data.data)
+                                    //         setdefaultList(res.data.data)
+                                    //     })
+                                    //     .catch(err => console.log(err.response.data))
                                 })
-                                .catch(err => console.log(err.response.data))
+                                .catch(err => {
+                                    message.error(`Oops! Something went wrong. Please try again!`);
+                                    console.log(err.response.data)
+                                })
                         }}
                         okText="Yes"
                         cancelText="No"
                     >
-                        <a href="#" className='text-danger'>Delete</a>
+                        <button style={{ border: 'none' }} href="#" className='text-danger btn'>Delete</button>
                     </Popconfirm>
+                    <button className='text-primary btn' style={{ border: 'none' }} onClick={() => {
+                        setVisible({
+                            user: record,
+                            flag: true
+                        })
+                    }}>Edit</button>
                 </Space>
             },
         },
     ];
-
-    const handleChange = (e) => {
-        const { value, name } = e.target
-        setSearchValue({ ...searchValue, [name]: value })
-    }
-
-    const handleSearch = () => {
-        const { hoVaTen, maHocSinh } = searchValue
-        let MHStemp = maHocSinh.trim().replace(" ", "")
-        let HVTtemp = removeAccents(hoVaTen).toLowerCase()
-        let HVTsearchList = []
-        let MHSseacrhList = []
-
-        if (maHocSinh !== '') {
-            for (let student of list) {
-                let str = student['maHocSinh'].replace(/\r?\n/g, "")
-                if (str.includes(MHStemp)) {
-                    MHSseacrhList.push(student)
-                }
-            }
-            setList(MHSseacrhList)
-        } else if (hoVaTen !== '') {
-            for (let student of list) {
-                let str = removeAccents(student['hoVaTen']).toLowerCase()
-                if (str.search(HVTtemp) !== -1) {
-                    HVTsearchList.push(student)
-                }
-            }
-            setList(HVTsearchList)
-        } else {
-            setList(defaultList)
-        }
-    }
-
-    const removeAccents = (str) => {
-        return str.normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .replace(/đ/g, 'd').replace(/Đ/g, 'D');
-    }
 
     return (
         <div >
@@ -250,7 +301,7 @@ export default function TablePage() {
                         <label style={{ whiteSpace: 'nowrap', margin: "0 40px 0 0", fontSize: '20px' }}>Họ tên</label>
                     </div>
                     <div className='col-10'>
-                        <input onChange={handleChange} name='hoVaTen' placeholder='Nhập họ tên' className='form-control' />
+                        <input onChange={handleSearchChange} name='hoVaTen' placeholder='Nhập họ tên' className='form-control' />
                     </div>
                 </div>
                 <div className='row mt-4'>
@@ -258,7 +309,7 @@ export default function TablePage() {
                         <label style={{ whiteSpace: 'nowrap', margin: "0 40px 0 0", fontSize: '20px' }}>Mã học sinh</label>
                     </div>
                     <div className='col-10'>
-                        <input onChange={handleChange} name='maHocSinh' placeholder='Nhập mã học sinh' className='form-control' />
+                        <input onChange={handleSearchChange} name='maHocSinh' placeholder='Nhập mã học sinh' className='form-control' />
                     </div>
                 </div>
                 <div className='d-flex justify-content-center mt-3'>
@@ -275,7 +326,61 @@ export default function TablePage() {
                 dataSource={list}
                 size="small" bordered
                 scroll={{ x: '200vw' }} />
-
+            <Modal
+                title={`Chỉnh sửa thông tin học sinh ${visible.user.hoVaTen}`}
+                visible={visible.flag}
+                onOk={handleOk}
+                confirmLoading={visible.isLoading}
+                onCancel={() => {
+                    setVisible({
+                        user: {},
+                        flag: false
+                    })
+                }}
+            >
+                <div className='mb-3'>
+                    <label>Mã học sinh: </label>
+                    <Input name='maHocSinh' disabled value={visible.user.maHocSinh} onChange={handleModalChange} />
+                </div>
+                <div className='mb-3'>
+                    <label>Trường tiểu học: </label>
+                    <Input name='truongTieuHoc' defaultValue={visible.user.truongTieuHoc} onChange={handleModalChange} />
+                </div>
+                <div className='mb-3'>
+                    <label>Quận/Huyện: </label>
+                    <Input name='quanHuyen' defaultValue={visible.user.quanHuyen} onChange={handleModalChange} />
+                </div>
+                <div className='mb-3'>
+                    <label>Lớp: </label>
+                    <Input name='lop' defaultValue={visible.user.lop} onChange={handleModalChange} />
+                </div>
+                <div className='mb-3 d-flex'>
+                    <div className='mr-3'>
+                        <label>Ngày sinh: </label>
+                        <Input name='ngay' defaultValue={visible.user.ngay} onChange={handleModalChange} />
+                    </div>
+                    <div className='mr-3'>
+                        <label>Tháng sinh: </label>
+                        <Input name='thang' defaultValue={visible.user.thang} onChange={handleModalChange} />
+                    </div>
+                    <div>
+                        <label>Năm sinh: </label>
+                        <Input name='nam' defaultValue={visible.user.nam} onChange={handleModalChange} />
+                    </div>
+                </div>
+                <div className='mb-3'>
+                    <label>Dân tộc: </label>
+                    <Input name='danToc' defaultValue={visible.user.danToc} onChange={handleModalChange} />
+                </div>
+                <div className='mb-3'>
+                    <label>Hộ khẩu thường trú: </label>
+                    <Input name='hoKhau' defaultValue={visible.user.hoKhau} onChange={handleModalChange} />
+                </div>
+                <div className='mb-3'>
+                    <label>Điện thoại liên hệ: </label>
+                    <Input name='dienThoai' defaultValue={visible.user.dienThoai} onChange={handleModalChange} />
+                </div>
+            </Modal>
         </div>
     )
 }

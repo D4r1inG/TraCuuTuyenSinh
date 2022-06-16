@@ -71,7 +71,26 @@ app.delete('/api/delete', function (req, res) {
 
 app.post('/api/deleteUser', function (req, res) {
     var sql = "DELETE FROM mylist "
-    + "WHERE maHocSinh='"+req.body.maHocSinh+"'";
+        + "WHERE maHocSinh='" + req.body.maHocSinh + "'";
+    connection.query(sql, function (err, results) {
+        if (err) throw err;
+        res.json({ data: results });
+    });
+})
+
+
+app.post('/api/updateUser', function (req, res) {
+    var sql = "UPDATE `mylist` SET "
+        + "truongTieuHoc='" + req.body.truongTieuHoc + "',"
+        + "quanHuyen='" + req.body.quanHuyen + "',"
+        + "lop='" + req.body.lop + "',"
+        + "thang='" + req.body.thang + "',"
+        + "nam='" + req.body.nam + "',"
+        + "noiSinh='" + req.body.noiSinh + "',"
+        + "danToc='" + req.body.danToc + "',"
+        + "hoKhau='" + req.body.hoKhau + "',"
+        + "dienThoai='" + req.body.dienThoai + "'"
+        + "WHERE maHocSinh='" + req.body.maHocSinh + "'";
     connection.query(sql, function (err, results) {
         if (err) throw err;
         res.json({ data: results });

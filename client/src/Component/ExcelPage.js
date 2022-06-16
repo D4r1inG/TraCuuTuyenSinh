@@ -62,7 +62,7 @@ export default function ExcelPage() {
     return (
         <div className='d-flex flex-column justify-content-between' style={{ height: '100vh' }}>
             <div className='pt-5'>
-                <h1 className='text-center '>Tra cứu thông tin tuyển sinh</h1>
+                <h1 className='text-center'>Tra cứu thông tin tuyển sinh</h1>
                 {!showTable ? <div className='d-flex justify-content-center align-items-center flex-column'>
                     <img src={'./Logo-Hoc-Vien-Tai-Chinh-AOF.png'} alt='Logo' className='img-fluid' width={"200px"} />
                     <div className='d-flex justify-content-center mt-5 flex-column align-items-center'>
