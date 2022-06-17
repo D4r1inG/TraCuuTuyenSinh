@@ -279,10 +279,11 @@ export default function TablePage() {
                         }}
                         okText="Yes"
                         cancelText="No"
+                        placement="left"
                     >
-                        <button style={{ border: 'none' }} href="#" className='text-danger btn'>Delete</button>
+                        <button href="#" className='focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1.5 '>Delete</button>
                     </Popconfirm>
-                    <button className='text-primary btn' style={{ border: 'none' }} onClick={() => {
+                    <button className='py-1.5 px-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 ' onClick={() => {
                         setVisible({
                             user: record,
                             flag: true,
@@ -296,37 +297,41 @@ export default function TablePage() {
 
     return (
         <div >
-            <div className='mb-5 w-50 mx-auto'>
-                <div className='row'>
-                    <div className='col-2'>
-                        <label style={{ whiteSpace: 'nowrap', margin: "0 40px 0 0", fontSize: '20px' }}>Họ tên</label>
-                    </div>
-                    <div className='col-10'>
-                        <input onChange={handleSearchChange} name='hoVaTen' placeholder='Nhập họ tên' className='form-control' />
-                    </div>
+            <div className='mb-5 w-1/3 mx-auto'>
+                <label class="block">
+                    <span class="  block text-sm font-medium text-slate-700">
+                        Họ và tên
+                    </span>
+                    <input onChange={handleSearchChange} name='hoVaTen' class="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1" placeholder="Tìm theo họ và tên" />
+                </label>
+                <div className='mt-4'>
+                    <label class="block">
+                        <span class="after:content-['*'] after:ml-0.5 after:text-red-500 text-sm font-medium text-slate-700">
+                            Mã học sinh
+                        </span>
+                        <span class=" text-xs font-medium text-red-500">
+                            (Ưu tiên tìm theo mã học sinh)
+                        </span>
+                        <input onChange={handleSearchChange} name='maHocSinh' class="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1" placeholder="Tìm theo mã học sinh" />
+                    </label>
                 </div>
-                <div className='row mt-4'>
-                    <div className='col-2'>
-                        <label style={{ whiteSpace: 'nowrap', margin: "0 40px 0 0", fontSize: '20px' }}>Mã học sinh</label>
-                    </div>
-                    <div className='col-10'>
-                        <input onChange={handleSearchChange} name='maHocSinh' placeholder='Nhập mã học sinh' className='form-control' />
-                    </div>
-                </div>
-                <div className='d-flex justify-content-center mt-3'>
-                    <button className='btn btn-success px-4' onClick={() => handleSearch()}>Tìm kiếm</button>
-                    <button className='btn btn-primary ml-3' onClick={() => {
+                <div className='flex justify-center mt-3'>
+                    <button class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2  mr-5" onClick={() => handleSearch()}>Tìm kiếm</button>
+                    <button class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2 " onClick={() => {
                         setList(defaultList)
                     }}>Clear table</button>
                 </div>
             </div>
             <Table
-                className='mx-5'
+                className='mx-10'
                 columns={columns}
                 rowKey={"stt"}
                 dataSource={list}
                 size="small" bordered
-                scroll={{ x: '200vw' }} />
+                scroll={{ x: '200vw' }}
+                pagination={{
+                    pageSize: 10,
+                  }} />
             <Modal
                 title={`Chỉnh sửa thông tin học sinh ${visible.user.hoVaTen}`}
                 visible={visible.flag}
