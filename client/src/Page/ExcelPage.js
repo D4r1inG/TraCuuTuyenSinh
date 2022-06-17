@@ -75,8 +75,7 @@ export default function ExcelPage() {
             <div className='pt-10'>
                 <h1 className='text-center text-2xl'>Tra cứu thông tin tuyển sinh</h1>
                 {!showTable ? <div className='flex justify-center items-center flex-col'>
-                    <div>
-                        {/* <div className='bg-gray-200 h-full w-full relative' style={{zIndex: '-1',  width: "200px", height: '200px'}} ></div> */}
+                    <div className='bg-white' style={{ width: "200px", height: '200px'}}>
                         <div style={{backgroundImage: "url(./Logo-Hoc-Vien-Tai-Chinh-AOF.png)" , width: "200px", height: '200px'}} className='bg-no-repeat bg-cover bg-center relative'   ></div>
                     </div>
                     <div className='flex justify-center mt-5 flex-col items-center'>
