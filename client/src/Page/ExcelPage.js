@@ -24,7 +24,6 @@ export default function ExcelPage() {
                     message.error(`${info.file.name} file upload failed. Please insert excel file only!`);
                 } else {
                     ExcelRenderer(info.file.originFileObj, (err, resp) => {
-                        let newStudentList = []
                         for (let i = resp.rows.length - 1; i > 0; i--) {
                             if (typeof (resp.rows[i][0]) === 'number') {
                                 let student = new Student(
@@ -52,8 +51,6 @@ export default function ExcelPage() {
                                     resp.rows[i][21],
                                     resp.rows[i][22]
                                 )
-                                newStudentList.push(student)
-                                console.log(newStudentList)
                                 axios.post('/api/insert', student)
                                     .then(res => {
                                         setShowTable(true)
@@ -74,11 +71,14 @@ export default function ExcelPage() {
     };
 
     return (
-        <div className='flex flex-col justify-between' style={{ height: '100vh'}}>
+        <div className='flex flex-col justify-between' style={{ height: '100vh' }}>
             <div className='pt-10'>
                 <h1 className='text-center text-2xl'>Tra cứu thông tin tuyển sinh</h1>
                 {!showTable ? <div className='flex justify-center items-center flex-col'>
-                    <img src={'./Logo-Hoc-Vien-Tai-Chinh-AOF.png'} alt='Logo' width={"200px"} />
+                    <div>
+                        {/* <div className='bg-gray-200 h-full w-full relative' style={{zIndex: '-1',  width: "200px", height: '200px'}} ></div> */}
+                        <div style={{backgroundImage: "url(./Logo-Hoc-Vien-Tai-Chinh-AOF.png)" , width: "200px", height: '200px'}} className='bg-no-repeat bg-cover bg-center relative'   ></div>
+                    </div>
                     <div className='flex justify-center mt-5 flex-col items-center'>
                         <Dragger {...props}>
                             <p className="ant-upload-drag-icon">
@@ -94,21 +94,21 @@ export default function ExcelPage() {
                     <TablePage />
                 }
             </div>
-            <footer class="p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800">
-                <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2022 <a href="#" class="hover:underline">Học viện tài chính</a>. All Rights Reserved.
+            <footer className="p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800">
+                <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2022 <a href="#" className="hover:underline">Học viện tài chính</a>. All Rights Reserved.
                 </span>
-                <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
+                <ul className="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
                     <li>
-                        <a href="#" class="mr-4 hover:underline md:mr-6 ">About</a>
+                        <a href="#" className="mr-4 hover:underline md:mr-6 ">About</a>
                     </li>
                     <li>
-                        <a href="#" class="mr-4 hover:underline md:mr-6">Privacy Policy</a>
+                        <a href="#" className="mr-4 hover:underline md:mr-6">Privacy Policy</a>
                     </li>
                     <li>
-                        <a href="#" class="mr-4 hover:underline md:mr-6">Licensing</a>
+                        <a href="#" className="mr-4 hover:underline md:mr-6">Licensing</a>
                     </li>
                     <li>
-                        <a href="#" class="hover:underline">Contact</a>
+                        <a href="#" className="hover:underline">Contact</a>
                     </li>
                 </ul>
             </footer>
