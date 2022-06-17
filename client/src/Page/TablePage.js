@@ -331,14 +331,13 @@ export default function TablePage() {
                 scroll={{ x: '200vw' }}
                 pagination={{
                     pageSize: 10,
-                }}
-            />
-
+                }} />
             <Modal
                 title={`Chỉnh sửa thông tin học sinh ${visible.user.hoVaTen}`}
                 visible={visible.flag}
                 onOk={handleOk}
                 confirmLoading={visible.isLoading}
+                width={'50vw'}
                 onCancel={() => {
                     setVisible({
                         user: {},
@@ -346,47 +345,49 @@ export default function TablePage() {
                         isLoading: false
                     })
                 }}>
-                <div className='mb-3'>
-                    <label>Mã học sinh: </label>
-                    <Input name='maHocSinh' disabled value={visible.user.maHocSinh} onChange={handleModalChange} />
-                </div>
-                <div className='mb-3'>
-                    <label>Trường tiểu học: </label>
-                    <Input name='truongTieuHoc' value={visible.user.truongTieuHoc} onChange={handleModalChange} />
-                </div>
-                <div className='mb-3'>
-                    <label>Quận/Huyện: </label>
-                    <Input name='quanHuyen' value={visible.user.quanHuyen} onChange={handleModalChange} />
-                </div>
-                <div className='mb-3'>
-                    <label>Lớp: </label>
-                    <Input name='lop' value={visible.user.lop} onChange={handleModalChange} />
-                </div>
-                <div className='mb-3 d-flex'>
-                    <div className='mr-3'>
-                        <label>Ngày sinh: </label>
-                        <Input name='ngay' value={visible.user.ngay} onChange={handleModalChange} />
-                    </div>
-                    <div className='mr-3'>
-                        <label>Tháng sinh: </label>
-                        <Input name='thang' value={visible.user.thang} onChange={handleModalChange} />
+                <div className='grid grid-cols-2 gap-5'>
+                    <div>
+                        <label>Mã học sinh: </label>
+                        <Input name='maHocSinh' disabled value={visible.user.maHocSinh} onChange={handleModalChange} />
                     </div>
                     <div>
-                        <label>Năm sinh: </label>
-                        <Input name='nam' value={visible.user.nam} onChange={handleModalChange} />
+                        <label>Trường tiểu học: </label>
+                        <Input name='truongTieuHoc' value={visible.user.truongTieuHoc} onChange={handleModalChange} />
                     </div>
-                </div>
-                <div className='mb-3'>
-                    <label>Dân tộc: </label>
-                    <Input name='danToc' value={visible.user.danToc} onChange={handleModalChange} />
-                </div>
-                <div className='mb-3'>
-                    <label>Hộ khẩu thường trú: </label>
-                    <Input name='hoKhau' value={visible.user.hoKhau} onChange={handleModalChange} />
-                </div>
-                <div className='mb-3'>
-                    <label>Điện thoại liên hệ: </label>
-                    <Input name='dienThoai' value={visible.user.dienThoai} onChange={handleModalChange} />
+                    <div>
+                        <label>Quận/Huyện: </label>
+                        <Input name='quanHuyen' value={visible.user.quanHuyen} onChange={handleModalChange} />
+                    </div>
+                    <div>
+                        <label>Lớp: </label>
+                        <Input name='lop' value={visible.user.lop} onChange={handleModalChange} />
+                    </div>
+                    <div className='grid grid-cols-3'>
+                        <div className='mr-3'>
+                            <label>Ngày sinh: </label>
+                            <Input name='ngay' value={visible.user.ngay} onChange={handleModalChange} />
+                        </div>
+                        <div className='mr-3'>
+                            <label>Tháng sinh: </label>
+                            <Input name='thang' value={visible.user.thang} onChange={handleModalChange} />
+                        </div>
+                        <div>
+                            <label>Năm sinh: </label>
+                            <Input name='nam' value={visible.user.nam} onChange={handleModalChange} />
+                        </div>
+                    </div>
+                    <div>
+                        <label>Dân tộc: </label>
+                        <Input name='danToc' value={visible.user.danToc} onChange={handleModalChange} />
+                    </div>
+                    <div>
+                        <label>Hộ khẩu thường trú: </label>
+                        <Input name='hoKhau' value={visible.user.hoKhau} onChange={handleModalChange} />
+                    </div>
+                    <div>
+                        <label>Điện thoại liên hệ: </label>
+                        <Input name='dienThoai' value={visible.user.dienThoai} onChange={handleModalChange} />
+                    </div>
                 </div>
             </Modal>
         </div>
