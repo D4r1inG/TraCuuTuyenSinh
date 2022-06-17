@@ -296,7 +296,7 @@ export default function TablePage() {
     ];
 
     return (
-        <div >
+        <div className='bg-no-repeat bg-cover bg-center pt-5 border rounded border-gray-300 m-5	' style={{ backgroundImage: 'url(./bg.jpg)' }} >
             <div className='mb-5 w-1/3 mx-auto'>
                 <label class="block">
                     <span class="  block text-sm font-medium text-slate-700">
@@ -323,7 +323,7 @@ export default function TablePage() {
                 </div>
             </div>
             <Table
-                className='mx-10'
+                className='mx-5'
                 columns={columns}
                 rowKey={"stt"}
                 dataSource={list}
@@ -331,7 +331,9 @@ export default function TablePage() {
                 scroll={{ x: '200vw' }}
                 pagination={{
                     pageSize: 10,
-                  }} />
+                }}
+            />
+
             <Modal
                 title={`Chỉnh sửa thông tin học sinh ${visible.user.hoVaTen}`}
                 visible={visible.flag}
@@ -343,8 +345,7 @@ export default function TablePage() {
                         flag: false,
                         isLoading: false
                     })
-                }}
-            >
+                }}>
                 <div className='mb-3'>
                     <label>Mã học sinh: </label>
                     <Input name='maHocSinh' disabled value={visible.user.maHocSinh} onChange={handleModalChange} />

@@ -74,7 +74,7 @@ export default function ExcelPage() {
     };
 
     return (
-        <div className='flex flex-col justify-between' style={{ height: '100vh' }}>
+        <div className='flex flex-col justify-between' style={{ height: '100vh'}}>
             <div className='pt-10'>
                 <h1 className='text-center text-2xl'>Tra cứu thông tin tuyển sinh</h1>
                 {!showTable ? <div className='flex justify-center items-center flex-col'>
